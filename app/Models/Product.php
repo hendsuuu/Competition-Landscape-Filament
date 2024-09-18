@@ -11,16 +11,19 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'user_id',
         'location_id',
         'brand_id',
-        'user_id',
         'product_name',
-        'RBP',
-        'EUP',
+        'rbp',
+        'eup',
+        'yield',
         'kuota_nasional',
         'kuota_lokal',
+        'total_kuota',
         'validity',
         'product_type',
+        'flag_type',
         'denom', 
     ];
     

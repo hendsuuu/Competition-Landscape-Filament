@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             Brand::class,
             Location::class,
             User::class,
+            Product::class
         ]);
         // \App\Models\User::factory(10)->create();
 

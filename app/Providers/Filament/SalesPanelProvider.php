@@ -26,8 +26,11 @@ class SalesPanelProvider extends PanelProvider
             ->id('sales')
             ->path('sales')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#FFEB00'),
             ])
+            ->login()
+            ->brandName('Indosat')
+            ->brandLogo(asset('logo-ioh.svg'))
             ->discoverResources(in: app_path('Filament/Sales/Resources'), for: 'App\\Filament\\Sales\\Resources')
             ->discoverPages(in: app_path('Filament/Sales/Pages'), for: 'App\\Filament\\Sales\\Pages')
             ->pages([

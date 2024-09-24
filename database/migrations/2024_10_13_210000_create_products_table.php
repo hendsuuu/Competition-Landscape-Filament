@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('validity');
             $table->string('flag_type')->nullable();
             $table->enum('product_type', ['SIM', 'VOUCHER']);
-            $table->enum('denom', ['5-10 K', '10-15 K', '<30 K', '20 K', '25 K', '30 K', '40 K', '50 K', '60-70 K', '80-90 K', '100 K', '120 K', '150 K']);
+            $table->enum('denom', ['5 - 10 K', '10 - 15 K', '15 - 20 K', '<30 K', '~20 K', '~25 K', '~30 K', '~40 K', '~50 K', '~60 - 70 K', '~80 - 90 K', '~100 K', '~120 K', '~150 K']);
             $table->timestamps();
         });
     }

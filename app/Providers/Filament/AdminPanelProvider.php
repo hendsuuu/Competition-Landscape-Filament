@@ -12,6 +12,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use App\Filament\Resources\LineChartResource\Widgets\BlogPostsChart;
+use App\Filament\Resources\LineChartResource\Widgets\YieldeUp as WidgetsYieldeUp;
 use Filament\View\LegacyComponents\Widget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -20,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use PhpParser\Node\Expr\Yield_;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -54,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
                 // Widgets\AccountWidget::class,
                 StatsOverview::class,
                 BlogPostsChart::class,
+                WidgetsYieldeUp::class
             ])
             ->middleware([
                 EncryptCookies::class,

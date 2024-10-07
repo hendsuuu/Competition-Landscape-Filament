@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +29,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/get-provinces', function () {
+    $response = Http::get('https://wilayah.id/api/provinces.json');
+    return $response->json();
+});
+Route::get('/get-regencies/{province_code}', function ($province_code) {
+    $response = Http::get("https://wilayah.id/api/regencies/{$province_code}.json");
+    return $response->json();
+});
 require __DIR__.'/auth.php';

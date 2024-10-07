@@ -9,15 +9,14 @@ use App\Models\Brand;
 use App\Models\User;
 use Filament\Widgets\ChartWidget;
 
-
-class BlogPostsChart extends ChartWidget
+class YieldeUp extends ChartWidget
 {
 
-    protected static ?string $heading = 'EUP vs Total Kuota';
+    protected static ?string $heading = 'Yield vs EUP';
 
     protected function getData(): array
     {
-        $scatterData = Product::select('brand_id', 'eup', 'total_kuota')->get();
+        $scatterData = Product::select('brand_id', 'eup', 'yield')->get();
         $groupedData = $scatterData->groupBy('brand_id');
 
 
@@ -46,7 +45,7 @@ class BlogPostsChart extends ChartWidget
             foreach ($dataPoints as $point) {
                 $scatterPoints[] = [
                     'x' => $point['eup'],
-                    'y' => $point['total_kuota'],
+                    'y' => $point['yield'],
                 ];
             }
 

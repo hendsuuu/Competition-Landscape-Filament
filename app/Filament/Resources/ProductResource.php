@@ -15,7 +15,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
@@ -73,6 +75,24 @@ class ProductResource extends Resource
                             ])
                             ->native(false)
                             ->columnSpan(2)
+                            ->required(),
+                        Forms\Components\Select::make('provinsi')
+                            ->label('Provinsi')
+                            ->native(false)
+                            ->preload()
+                            ->searchable(   )
+                            ->options(fn() => self::getProvinces()) // Menggunakan self untuk memanggil fungsi statis
+                            ->reactive() // Membuat form responsif terhadap perubahan
+                            ->afterStateUpdated(fn(callable $set) => $set('kabupaten_kota', null)) // Reset kabupaten ketika provinsi berubah
+                            ->required(),
+
+                        // Dropdown untuk kabupaten/kota, akan di-update setelah provinsi dipilih
+                        Forms\Components\Select::make('kabupaten_kota')
+                            ->label('Kabupaten/Kota')
+                            ->native(false)
+                            ->preload()
+                            ->searchable()
+                            ->options(fn(callable $get) => self::getRegencies($get('provinsi'))) // Menggunakan self untuk memanggil fungsi statis
                             ->required(),
                     ]),
                 ComponentsSection::make('Product Price')
@@ -142,6 +162,44 @@ class ProductResource extends Resource
                     ]),
 
             ]);
+    }
+    protected static function getProvinces(): array
+    {
+        // Panggil API untuk mendapatkan data provinsi
+        $response = Http::get('https://wilayah.id/api/provinces.json');
+
+        // Cek apakah response sukses dan memiliki data
+        if ($response->successful() && isset($response['data'])) {
+            $provinces = $response['data'];
+
+            // Pluck 'name' dan 'code' untuk dijadikan opsi select
+            return collect($provinces)->pluck('name', 'code')->toArray();
+        }
+
+        // Jika gagal atau tidak ada data, kembalikan array kosong
+        return [];
+    }
+
+    // Fungsi untuk mendapatkan daftar kabupaten/kota berdasarkan provinsi terpilih
+    protected static function getRegencies($province_code): array
+    {
+        if (!$province_code) {
+            return [];
+        }
+
+        // Panggil API untuk mendapatkan kabupaten/kota berdasarkan kode provinsi
+        $response = Http::get("https://wilayah.id/api/regencies/{$province_code}.json");
+
+        // Cek apakah response sukses dan memiliki data
+        if ($response->successful() && isset($response['data'])) {
+            $regencies = $response['data'];
+
+            // Pluck 'name' dan 'code' untuk dijadikan opsi select
+            return collect($regencies)->pluck('name', 'code')->toArray();
+        }
+
+        // Jika gagal atau tidak ada data, kembalikan array kosong
+        return [];
     }
 
     public static function table(Table $table): Table

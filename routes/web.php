@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect('/admin');
 });
 
 Route::get('/dashboard', function () {
@@ -37,4 +38,4 @@ Route::get('/get-regencies/{province_code}', function ($province_code) {
     $response = Http::get("https://wilayah.id/api/regencies/{$province_code}.json");
     return $response->json();
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

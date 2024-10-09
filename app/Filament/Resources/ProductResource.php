@@ -58,20 +58,20 @@ class ProductResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('denom')
                             ->options([
-                                '5-10 K' => '5 - 10 K',
-                                '10-15 K' => '10 - 15 K',
-                                '15-20 K' => '10 - 15 K',
+                                '5 - 10 K' => '5 - 10 K',
+                                '10 - 15 K' => '10 - 15 K',
+                                '15 - 20 K' => '15 - 20 K',
                                 '<30 K' => '<30 K',
-                                '20 K' => '~20 K',
-                                '25 K' => '~25 K',
-                                '30 K' => '~30 K',
-                                '40 K' => '~40 K',
-                                '50 K' => '~50 K',
-                                '60-70 K' => '~60 - 70 K',
-                                '80-90 K' => '~80 - 90 K',
-                                '100 K' => '~100 K',
-                                '120 K' => '~120 K',
-                                '150 K' => '~150 K',
+                                '~20 K' => '~20 K',
+                                '~25 K' => '~25 K',
+                                '~30 K' => '~30 K',
+                                '~40 K' => '~40 K',
+                                '~50 K' => '~50 K',
+                                '~60 - 70 K' => '~60 - 70 K',
+                                '~80 - 90 K' => '~80 - 90 K',
+                                '~100 K' => '~100 K',
+                                '~120 K' => '~120 K',
+                                '~150 K' => '~150 K',
                             ])
                             ->native(false)
                             ->columnSpan(2)
@@ -80,7 +80,7 @@ class ProductResource extends Resource
                             ->label('Provinsi')
                             ->native(false)
                             ->preload()
-                            ->searchable(   )
+                            ->searchable()
                             ->options(fn() => self::getProvinces()) // Menggunakan self untuk memanggil fungsi statis
                             ->reactive() // Membuat form responsif terhadap perubahan
                             ->afterStateUpdated(fn(callable $set) => $set('kabupaten_kota', null)) // Reset kabupaten ketika provinsi berubah

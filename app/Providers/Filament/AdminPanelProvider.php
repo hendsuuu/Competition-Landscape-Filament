@@ -12,6 +12,8 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use App\Filament\Resources\LineChartResource\Widgets\BlogPostsChart;
+use App\Filament\Resources\LineChartResource\Widgets\LatestOrders;
+use App\Filament\Widgets\ProductTableWidget;
 use App\Filament\Resources\LineChartResource\Widgets\YieldeUp as WidgetsYieldeUp;
 use Filament\View\LegacyComponents\Widget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -56,7 +58,9 @@ class AdminPanelProvider extends PanelProvider
                 // Widgets\AccountWidget::class,
                 StatsOverview::class,
                 BlogPostsChart::class,
-                WidgetsYieldeUp::class
+                WidgetsYieldeUp::class,
+                ProductTableWidget::class
+                // LatestOrders::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -76,6 +80,4 @@ class AdminPanelProvider extends PanelProvider
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
             ]);
     }
-
-    
 }

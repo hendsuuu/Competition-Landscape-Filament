@@ -16,6 +16,7 @@ class Brand extends Seeder
         //
         $brands = array(
             array('name' => 'Indosat'),
+            array('name' => 'Tri'),
             array('name' => 'Telkomsel'),
             array('name' => 'XL'),
             array('name' => 'AXIS'),

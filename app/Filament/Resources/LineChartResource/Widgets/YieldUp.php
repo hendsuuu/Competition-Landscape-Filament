@@ -13,6 +13,9 @@ class YieldeUp extends ChartWidget
 {
 
     protected static ?string $heading = 'Yield vs EUP';
+    // protected int | string | array $columnSpan = 'full';
+
+
 
     protected function getData(): array
     {

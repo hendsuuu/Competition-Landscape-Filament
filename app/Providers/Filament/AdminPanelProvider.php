@@ -12,8 +12,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use App\Filament\Resources\LineChartResource\Widgets\BlogPostsChart;
-use App\Filament\Resources\LineChartResource\Widgets\LatestOrders;
-use App\Filament\Widgets\ProductTableWidget;
+use App\Filament\Resources\LineChartResource\Widgets\ProductTableWidget;
 use App\Filament\Resources\LineChartResource\Widgets\YieldeUp as WidgetsYieldeUp;
 use Filament\View\LegacyComponents\Widget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -24,6 +23,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use PhpParser\Node\Expr\Yield_;
+use Filament\Support\Enums\MaxWidth;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
     //         // BlogPostsChart::class,
     //     ];
     // }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -50,9 +51,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('logo-ioh.svg'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,

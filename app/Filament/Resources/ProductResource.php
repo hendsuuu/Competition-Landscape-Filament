@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section as ComponentsSection;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Section;
@@ -13,10 +14,14 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Column;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Modal\ModalAction;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\ImageEntry;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -30,10 +35,8 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
+                Forms\Components\Hidden::make('user_id')
                     ->default(Auth::id())
-                    ->extraAttributes(['style' => 'display: none;'])
-                    ->readOnly()
                     ->required(),
                 ComponentsSection::make('Product Information')
                     ->columns(2)
@@ -160,6 +163,9 @@ class ProductResource extends Resource
                             ->required()
                             ->numeric(),
                     ]),
+                FileUpload::make('image')
+                    ->image()
+                    ->columnSpan(2),
 
             ]);
     }
@@ -172,13 +178,97 @@ class ProductResource extends Resource
         if ($response->successful() && isset($response['data'])) {
             $provinces = $response['data'];
 
+            // Daftar kode provinsi untuk Jawa, Bali, dan Nusa Tenggara
+            $validProvinceCodes = [
+                '32', // Jawa Barat
+                '33', // Jawa Tengah
+                '34', // Yogyakarta
+                '35', // Jawa Timur
+                '51', // Bali
+                '52', // Nusa Tenggara Barat
+                '53', // Nusa Tenggara Timur
+            ];
+
+            // Filter provinces to only include those in the valid codes
+            $filteredProvinces = collect($provinces)
+                ->filter(function ($province) use ($validProvinceCodes) {
+                    return in_array($province['code'], $validProvinceCodes);
+                });
+
             // Pluck 'name' dan 'code' untuk dijadikan opsi select
-            return collect($provinces)->pluck('name', 'code')->toArray();
+            return $filteredProvinces->pluck('name', 'code')->toArray();
         }
 
         // Jika gagal atau tidak ada data, kembalikan array kosong
         return [];
     }
+    // protected static function getRegencies($province_code): array
+    // {
+    //     if (!$province_code) {
+    //         return [];
+    //     }
+
+    //     // Panggil API untuk mendapatkan kabupaten/kota berdasarkan kode provinsi
+    //     $response = Http::get("https://wilayah.id/api/regencies/{$province_code}.json");
+
+    //     // Cek apakah response sukses dan memiliki data
+    //     if ($response->successful() && isset($response['data'])) {
+    //         $regencies = $response['data'];
+
+    //         // Daftar kabupaten dan kota yang ingin ditampilkan
+    //         $validRegencies = [
+    //             'Kab. Kudus',
+    //             'Kab. Pati',
+    //             'Kab. Pekalongan',
+    //             'Kab. Pemalang',
+    //             'Kab. Salatiga',
+    //             'Kab. Semarang',
+    //             'Kab. Tegal',
+    //             'Kab. Karanganyar',
+    //             'Kab. Kebumen',
+    //             'Kab. Klaten',
+    //             'Kab. Magelang',
+    //             'Kab. Purwokerto',
+    //             'Kab. Sleman',
+    //             'Kab. Solo',
+    //             'Kab. Yogyakarta',
+    //             'Kab. Jember',
+    //             'Kab. Kediri',
+    //             'Kab. Malang',
+    //             'Kab. Probolinggo',
+    //             'Kab. Sidoarjo',
+    //             'Kab. Tulungagung',
+    //             'Kab. Gresik Mojokerto',
+    //             'Kab. Jombang',
+    //             'Kab. Madiun',
+    //             'Kab. Madura',
+    //             'Kab. Surabaya',
+    //             'Kab. Tuban Lamongan',
+    //             'Kab. Bali Barat',
+    //             'Kota Semarang',
+    //             'Kab. Bali Timur',
+    //             'Kab. Florest Barat',
+    //             'Kab. Florest Timur',
+    //             'Kab. Lombok',
+    //             'Kab. Sumba',
+    //             'Kab. Sumbawa',
+    //             'Kab. Timor',
+    //         ];
+
+    //         // Filter regencies to only include those in the valid list
+    //         $filteredRegencies = collect($regencies)
+    //             ->filter(function ($regency) use ($validRegencies) {
+    //                 return in_array($regency['name'], $validRegencies);
+    //             });
+
+    //         // Pluck 'name' dan 'code' untuk dijadikan opsi select
+    //         return $filteredRegencies->pluck('name', 'code')->toArray();
+    //     }
+
+    //     // Jika gagal atau tidak ada data, kembalikan array kosong
+    //     return [];
+    // }
+
 
     // Fungsi untuk mendapatkan daftar kabupaten/kota berdasarkan provinsi terpilih
     protected static function getRegencies($province_code): array
@@ -262,13 +352,21 @@ class ProductResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->width('100px')
+                    ->openUrlInNewTab()
+                    ->height('100px'),
+
             ])
+
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -357,6 +455,14 @@ class ProductResource extends Resource
                             ->label('Updated At')
                             ->dateTime(),
                     ]),
+                Section::make('Image')
+                    ->columns(2)
+                    ->schema([
+                        ImageEntry::make('image')
+                            ->label('Product Image')
+                            ->columnSpanFull()
+                    ])
+
             ]);
     }
 

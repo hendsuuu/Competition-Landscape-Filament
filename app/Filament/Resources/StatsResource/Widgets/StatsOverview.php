@@ -16,12 +16,12 @@ class StatsOverview extends BaseWidget
                 ->description('Total Sales')
                 ->descriptionIcon('heroicon-m-user'),
             Stat::make('Total Product', Product::query()->count()),
-            Stat::make('IM3', Product::query()->where('brand_id', '1')->count()),
+            Stat::make('Indosat', Product::query()->where('brand_id', '1')->count()),
             Stat::make('Tri', Product::query()->where('brand_id', '2')->count()),
-            Stat::make('XL', Product::query()->where('brand_id', '3')->count()),
-            Stat::make('Axis', Product::query()->where('brand_id', '4')->count()),
-            Stat::make('Smartfren', Product::query()->where('brand_id', '5')->count()),
-            Stat::make('Telkomsel', Product::query()->where('brand_id', '6')->count()),
+            Stat::make('Telkomsel', Product::query()->where('brand_id', '3')->count()),
+            Stat::make('XL', Product::query()->where('brand_id', '4')->count()),
+            Stat::make('Axis', Product::query()->where('brand_id', '5')->count()),
+            Stat::make('Smartfren', Product::query()->where('brand_id', '6')->count()),
         ];
     }
 }

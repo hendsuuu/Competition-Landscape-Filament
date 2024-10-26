@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\SalesUser\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
@@ -295,12 +295,6 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->query(function (Builder $query) {
-            //     // Jika user bukan admin, maka filter berdasarkan user_id
-            //     if (Auth::id() !== 1) {
-            //         $query->where('user_id', Auth::id());
-            //     }
-            // })
             ->columns([
                 Tables\Columns\TextColumn::make('brand.name')
                     ->numeric()

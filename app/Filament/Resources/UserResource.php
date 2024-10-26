@@ -33,19 +33,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('no_hp')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('location_id')
-                    ->label('Location')
-                    ->relationship('location', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->required(),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -63,10 +50,6 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('Location.name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('no_hp')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -114,10 +97,6 @@ class UserResource extends Resource
                         ->label('Name'),
                         TextEntry::make('email')
                         ->label('Email'),
-                        TextEntry::make('no_hp')
-                        ->label('Phone Number'),
-                        TextEntry::make('location.name')
-                        ->label('Location'),
                     ]),
                 Section::make('Roles')
                 ->columns(1)
@@ -134,9 +113,9 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'create' => Pages\CreateUser::route('/create'),
+            // 'view' => Pages\ViewUser::route('/{record}'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

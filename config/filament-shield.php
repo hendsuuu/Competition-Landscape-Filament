@@ -32,6 +32,10 @@ return [
         'enabled' => true,
         'name' => 'sales',
     ],
+    'sales_user' => [
+        'enabled' => true,
+        'name' => 'sales_user',
+    ],
 
     'permission_prefixes' => [
         'resource' => [

@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\Filament\SalesPanelProvider::class,
+        App\Providers\Filament\SalesUserPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
 

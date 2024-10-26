@@ -27,7 +27,7 @@ class UserTableSeeder extends Seeder
         );
 
         $adminRole = Role::firstOrCreate(['name' => 'super_admin']);
-        $salesRole = Role::firstOrCreate(['name' => 'sales']);
+        $salesRole = Role::firstOrCreate(['name' => 'sales_user']);
 
         foreach ($users as $user) {
             $newUserId = DB::table('users')->insertGetId($user);

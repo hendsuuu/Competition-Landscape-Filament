@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('location_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('location_id')->constrained()->cascadeOnDelete();
             $table->string('product_name');
             $table->integer('rbp');
             $table->integer('eup');

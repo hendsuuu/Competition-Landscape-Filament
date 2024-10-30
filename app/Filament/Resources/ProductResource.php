@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -45,10 +48,10 @@ class ProductResource extends Resource
                             ->native(false)
                             ->relationship('brand', 'name')
                             ->required(),
-                        Forms\Components\Select::make('location_id')
-                            ->native(false)
-                            ->relationship('location', 'name')
-                            ->required(),
+                        // Forms\Components\Select::make('location_id')
+                        //     ->native(false)
+                        //     ->relationship('location', 'name')
+                        //     ->required(),
                         Forms\Components\TextInput::make('product_name')
                             ->required()
                             ->maxLength(255),
@@ -127,6 +130,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('kuota_nasional')
                             ->reactive()
                             ->numeric()
+                            ->live(debounce: 100)
                             ->afterStateUpdated(
                                 function (callable $set, $state, $get) {
                                     $set('total_kuota', ($get('kuota_nasional') != null) ? $get('kuota_nasional') + $get('kuota_lokal') : $get('kuota_lokal'));
@@ -136,6 +140,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('kuota_lokal')
                             ->reactive()
                             ->numeric()
+                            ->live(debounce: 100)
                             ->extraAttributes([
                                 'x-data' => '{}',
                                 'x-init' => 'this.addEventListener("focus", () => { $el.select() })',
@@ -152,6 +157,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('total_kuota')
                             ->numeric()
                             ->readOnly()
+                            ->live(debounce: 100)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != null) ? $get('eup') / $get('total_kuota') : 0)
@@ -295,19 +301,17 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->query(function (Builder $query) {
-            //     // Jika user bukan admin, maka filter berdasarkan user_id
-            //     if (Auth::id() !== 1) {
-            //         $query->where('user_id', Auth::id());
-            //     }
-            // })
+            ->headerActions([
+                ExportAction::make()
+                    // ->exporter(ProductExporter::class)
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('brand.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('location.name')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('location.name')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('product_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rbp')
@@ -365,12 +369,18 @@ class ProductResource extends Resource
                     ->height('100px'),
 
             ])
-
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                // ExportAction::make()->exports([
+                //     // Pass a string
+                //     ExcelExport::make()->withFilename(date('Y-m-d') . ' - export'),
+
+                //     // Or pass a Closure
+                //     ExcelExport::make()->withFilename(fn($resource) => $resource::getLabel())
+                // ]),
                 Tables\Actions\EditAction::make(),
 
             ])
@@ -378,6 +388,7 @@ class ProductResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+                ExportBulkAction::make(),
             ]);
     }
 

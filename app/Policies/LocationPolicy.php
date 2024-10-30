@@ -2,20 +2,15 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Location;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class LocationPolicy
 {
-    use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_location');
+        return $user->can('view_any_product');
     }
 
     /**

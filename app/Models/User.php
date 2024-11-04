@@ -63,15 +63,6 @@ class User extends Authenticatable implements FilamentUser
 
     protected static function booted(): void
     {
-        if (config('filament-shield.sales_user.enabled', false)) {
-            FilamentShield::createRole(name: config('filament-shield.sales_user.name', 'sales_user' ));
-            static::created(function (User $user) {
-                $user->assignRole(config('filament-shield.sales_user.name', 'sales_user'));
-            });
-            static::deleting(function (User $user) {
-                $user->removeRole(config('filament-shield.sales_user.name', 'sales_user'));
-            });
-        }
         if (config('filament-shield.sales.enabled', false)) {
             FilamentShield::createRole(name: config('filament-shield.sales.name', 'sales' ));
             static::created(function (User $user) {
@@ -89,8 +80,6 @@ class User extends Authenticatable implements FilamentUser
             return $this->hasRole(Utils::getSuperAdminName());
         }elseif($panel->getId() === 'sales'){
             return $this->hasRole(config('filament-shield.sales.name', 'sales'));
-        }elseif($panel->getId() === 'sales_user'){
-            return $this->hasRole(config('filament-shield.sales_user.name', 'sales_user'));
         }else{
             return false;
         }

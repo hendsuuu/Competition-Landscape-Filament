@@ -45,10 +45,10 @@ class ProductResource extends Resource
                             ->native(false)
                             ->relationship('brand', 'name')
                             ->required(),
-                        Forms\Components\Select::make('location_id')
-                            ->native(false)
-                            ->relationship('location', 'name')
-                            ->required(),
+                        // Forms\Components\Select::make('location_id')
+                        //     ->native(false)
+                        //     ->relationship('location', 'name')
+                        //     ->required(),
                         Forms\Components\TextInput::make('product_name')
                             ->required()
                             ->maxLength(255),
@@ -109,6 +109,7 @@ class ProductResource extends Resource
                             ->label('EUP (Harga yg di beli Pelanggan)')
                             ->required()
                             ->numeric()
+                            ->live(debounce: 250)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != 0) ? $get('eup') / $get('total_kuota') : 0)
@@ -127,6 +128,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('kuota_nasional')
                             ->reactive()
                             ->numeric()
+                            ->live(debounce: 250)
                             ->afterStateUpdated(
                                 function (callable $set, $state, $get) {
                                     $set('total_kuota', ($get('kuota_nasional') != null) ? $get('kuota_nasional') + $get('kuota_lokal') : $get('kuota_lokal'));
@@ -136,6 +138,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('kuota_lokal')
                             ->reactive()
                             ->numeric()
+                            ->live(debounce: 250)
                             ->extraAttributes([
                                 'x-data' => '{}',
                                 'x-init' => 'this.addEventListener("focus", () => { $el.select() })',
@@ -152,6 +155,7 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('total_kuota')
                             ->numeric()
                             ->readOnly()
+                            ->live(debounce: 250)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != null) ? $get('eup') / $get('total_kuota') : 0)
@@ -180,7 +184,7 @@ class ProductResource extends Resource
 
             // Daftar kode provinsi untuk Jawa, Bali, dan Nusa Tenggara
             $validProvinceCodes = [
-                '32', // Jawa Barat
+                // '32', // Jawa Barat
                 '33', // Jawa Tengah
                 '34', // Yogyakarta
                 '35', // Jawa Timur
@@ -305,9 +309,9 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('brand.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('location.name')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('location.name')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('product_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rbp')
@@ -323,37 +327,42 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('yield')
                     ->numeric()
                     ->prefix('Rp. ')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('flag_zona')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kuota_nasional')
                     ->numeric()
                     ->suffix(' GB')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kuota_lokal')
                     ->numeric()
                     ->suffix(' GB')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('total_kuota')
                     ->numeric()
                     ->suffix(' GB')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('validity')
                     ->numeric()
                     ->suffix(' Hari')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('flag_type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('product_type'),
                 Tables\Columns\TextColumn::make('denom'),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->label('Author')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('user.name')
+                //     ->label('Author')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
+                // ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

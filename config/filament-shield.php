@@ -33,7 +33,7 @@ return [
         'name' => 'sales',
     ],
     'sales_user' => [
-        'enabled' => true,
+        'enabled' => false,
         'name' => 'sales_user',
     ],
 

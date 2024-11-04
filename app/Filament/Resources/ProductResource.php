@@ -86,6 +86,8 @@ class ProductResource extends Resource
                             ->label('Provinsi')
                             ->native(false)
                             ->preload()
+                            ->live(onBlur: true)
+                            ->debounce(100)
                             ->searchable()
                             ->options(fn() => self::getProvinces()) // Menggunakan self untuk memanggil fungsi statis
                             ->reactive() // Membuat form responsif terhadap perubahan
@@ -112,6 +114,8 @@ class ProductResource extends Resource
                             ->label('EUP (Harga yg di beli Pelanggan)')
                             ->required()
                             ->numeric()
+                            ->live(onBlur: true)
+                            ->debounce(100)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != 0) ? $get('eup') / $get('total_kuota') : 0)
@@ -130,7 +134,9 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('kuota_nasional')
                             ->reactive()
                             ->numeric()
-                            ->live(debounce: 100)
+                            // ->live(onBlur: true)
+                            ->default(0)
+                            ->debounce(600)
                             ->afterStateUpdated(
                                 function (callable $set, $state, $get) {
                                     $set('total_kuota', ($get('kuota_nasional') != null) ? $get('kuota_nasional') + $get('kuota_lokal') : $get('kuota_lokal'));
@@ -140,7 +146,9 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('kuota_lokal')
                             ->reactive()
                             ->numeric()
-                            ->live(debounce: 100)
+                            // ->live(onBlur: true)
+                            ->default(0)
+                            ->debounce(600)
                             ->extraAttributes([
                                 'x-data' => '{}',
                                 'x-init' => 'this.addEventListener("focus", () => { $el.select() })',
@@ -157,12 +165,12 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('total_kuota')
                             ->numeric()
                             ->readOnly()
-                            ->live(debounce: 100)
+                            ->live(onBlur: true)
+                            ->debounce(600)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != null) ? $get('eup') / $get('total_kuota') : 0)
                             )
-
                             ->reactive(),
                         Forms\Components\TextInput::make('validity')
                             ->label('validity (Jumlah Hari Paket Aktif)')
@@ -186,7 +194,7 @@ class ProductResource extends Resource
 
             // Daftar kode provinsi untuk Jawa, Bali, dan Nusa Tenggara
             $validProvinceCodes = [
-                '32', // Jawa Barat
+                // '32', // Jawa Barat
                 '33', // Jawa Tengah
                 '34', // Yogyakarta
                 '35', // Jawa Timur
@@ -303,7 +311,7 @@ class ProductResource extends Resource
         return $table
             ->headerActions([
                 ExportAction::make()
-                    // ->exporter(ProductExporter::class)
+                // ->exporter(ProductExporter::class)
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('brand.name')

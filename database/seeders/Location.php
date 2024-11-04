@@ -14,11 +14,12 @@ class Location extends Seeder
     {
         //
         $locations = array(
-            array('name' => 'Semarang'),
-            array('name' => 'Jakarta'),
-            array('name' => 'Bandung'),
-            array('name' => 'Yogyakarta'),
-            array('name' => 'Surabaya'),
+            array('name' => 'Jawa Tengah'),
+            array('name' => 'Jawa Timur '),
+            array('name' => 'Bali'),
+            array('name' => 'Nusa Tenggara Barat'),
+            array('name' => 'Nusa Tenggara Timur'),
+            array('name' => 'DI Yogyakarta'),
         );
         DB::table('locations')->insert($locations);
     }

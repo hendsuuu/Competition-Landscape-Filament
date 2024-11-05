@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Traits\CompressesImages;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\ImageEntry;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends Resource
 {
@@ -179,6 +181,8 @@ class ProductResource extends Resource
                     ]),
                 FileUpload::make('image')
                     ->image()
+                    ->optimize('webp')
+                    ->resize(50)
                     ->columnSpan(2),
 
             ]);
@@ -373,8 +377,8 @@ class ProductResource extends Resource
                 ImageColumn::make('image')
                     ->label('Image')
                     ->width('100px')
-                    ->openUrlInNewTab()
-                    ->height('100px'),
+                    ->height('100px')
+                    ->openUrlInNewTab(),
 
             ])
             ->filters([

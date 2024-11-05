@@ -40,15 +40,6 @@ class Register extends BaseRegister
                     ->password()
                     ->required()
                     ->minLength(8),
-                TextInput::make('no_hp')
-                    ->required()
-                    ->numeric()
-                    ->minLength(11),
-                Forms\Components\Select::make('location_id')
-                    ->native(false)
-                    // ->relationship('location', 'name')
-                    ->options(Location::all()->pluck('name', 'id'))
-                    ->required(),
             ]);
     }
     // protected function getUser(array $data): \Illuminate\Contracts\Auth\Authenticatable

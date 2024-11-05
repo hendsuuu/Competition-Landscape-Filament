@@ -169,6 +169,8 @@ class ProductResource extends Resource
                     ]),
                 FileUpload::make('image')
                     ->image()
+                    ->optimize('webp')
+                    ->resize(50)
                     ->columnSpan(2),
 
             ]);

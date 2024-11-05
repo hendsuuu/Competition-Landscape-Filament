@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ProductTableWidget extends Widget
 {
     protected int | string | array $columnSpan = 'full';
-    protected static string $view = 'filament.widgets.product-table-widget'; // Correct the type declaration here
-
+    protected static string $view = 'filament.widgets.product-table-widget';
     public $brands;
     public $denoms;
     public $tableData;

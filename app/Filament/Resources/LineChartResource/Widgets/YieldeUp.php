@@ -7,6 +7,7 @@ use Flowframe\Trend\TrendValue;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\User;
+use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
 
 class YieldeUp extends ChartWidget
@@ -15,11 +16,12 @@ class YieldeUp extends ChartWidget
     protected static ?string $heading = 'Yield vs EUP';
     // protected int | string | array $columnSpan = 'full';
 
-
-
     protected function getData(): array
     {
-        $scatterData = Product::select('brand_id', 'eup', 'yield')->get();
+        // $scatterData = Product::select('brand_id', 'eup', 'yield')->get();
+        $scatterData = Product::where('eup', '<', 400000)
+            ->select('brand_id', 'eup', 'yield', 'product_name')
+            ->get();
         $groupedData = $scatterData->groupBy('brand_id');
 
 
@@ -49,6 +51,7 @@ class YieldeUp extends ChartWidget
                 $scatterPoints[] = [
                     'x' => $point['eup'],
                     'y' => $point['yield'],
+                    'name' => $point['product_name']
                 ];
             }
 
@@ -66,6 +69,28 @@ class YieldeUp extends ChartWidget
 
         return [
             'datasets' => $datasets,
+            'options' => [
+                'plugins' => [
+                    'tooltip' => [
+                        'callbacks' => [
+                            'label' => function ($context) {
+                                $xValue = $context->raw->x;
+                                $yValue = $context->raw->y;
+                                $name = $context->raw->name;  // Ambil nilai name
+
+                                // Menampilkan name bersama dengan x dan y dalam tooltip
+                                return "{$name}: (X={$xValue}, Y={$yValue})";
+                            }
+                        ]
+                    ]
+                ],
+                'scales' => [
+                    'x' => [
+                        'type' => 'linear',
+                        'position' => 'bottom'
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -73,4 +98,32 @@ class YieldeUp extends ChartWidget
     {
         return 'scatter';
     }
+
+    // public function getOptions(): array
+    // {
+    //     return [
+    //         'options' => g[
+    //             'plugins' => [
+    //                 'tooltip' => [
+    //                     'callbacks' => [
+    //                         'label' => function ($context) {
+    //                             $xValue = $context->raw->x;
+    //                             $yValue = $context->raw->y;
+    //                             $name = $context->raw->name;  // Ambil nilai name
+
+    //                             // Menampilkan name bersama dengan x dan y dalam tooltip
+    //                             return "{$name}: (X={$xValue}, Y={$yValue})";
+    //                         }
+    //                     ]
+    //                 ]
+    //             ],
+    //             'scales' => [
+    //                 'x' => [
+    //                     'type' => 'linear',
+    //                     'position' => 'bottom'
+    //                 ]
+    //             ]
+    //         ]
+    //     ];
+    // }
 }

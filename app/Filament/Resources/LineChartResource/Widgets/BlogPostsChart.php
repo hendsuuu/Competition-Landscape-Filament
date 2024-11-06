@@ -18,7 +18,9 @@ class BlogPostsChart extends ChartWidget
 
     protected function getData(): array
     {
-        $scatterData = Product::select('brand_id', 'eup', 'product_name', 'total_kuota')->get();
+        $scatterData = Product::where('eup', '<', 400000)
+            ->select('brand_id', 'eup', 'product_name', 'total_kuota')
+            ->get();
         $groupedData = $scatterData->groupBy('brand_id');
 
 
@@ -48,7 +50,7 @@ class BlogPostsChart extends ChartWidget
                 $scatterPoints[] = [
                     'x' => $point['eup'],
                     'y' => $point['total_kuota'],
-                    'name' => $point['product_name'],
+                    'name' => $point['product_name'], //tambahan
                 ];
             }
 

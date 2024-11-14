@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\Hasroles;
+use Spatie\Permission\Traits\HasRoles;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -64,7 +64,7 @@ class User extends Authenticatable implements FilamentUser
     protected static function booted(): void
     {
         if (config('filament-shield.sales.enabled', false)) {
-            FilamentShield::createRole(name: config('filament-shield.sales.name', 'sales' ));
+            FilamentShield::createRole(name: config('filament-shield.sales.name', 'sales'));
             static::created(function (User $user) {
                 $user->assignRole(config('filament-shield.sales.name', 'sales'));
             });
@@ -76,11 +76,11 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        if( $panel->getId() === 'admin'){
+        if ($panel->getId() === 'admin') {
             return $this->hasRole(Utils::getSuperAdminName());
-        }elseif($panel->getId() === 'sales'){
+        } elseif ($panel->getId() === 'sales') {
             return $this->hasRole(config('filament-shield.sales.name', 'sales'));
-        }else{
+        } else {
             return false;
         }
     }

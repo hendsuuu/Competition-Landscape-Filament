@@ -82,7 +82,6 @@ class ProductResource extends Resource
                                 '~150 K' => '~150 K',
                             ])
                             ->native(false)
-                            ->columnSpan(2)
                             ->required(),
                         Forms\Components\Select::make('provinsi')
                             ->label('Provinsi')
@@ -117,15 +116,14 @@ class ProductResource extends Resource
                             ->required()
                             ->numeric()
                             ->live(onBlur: true)
-                            ->debounce(100)
+                            ->debounce(1500)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != 0) ? $get('eup') / $get('total_kuota') : 0)
                             ),
                         Forms\Components\TextInput::make('yield')
                             ->label('ٌYield (Keuntungan Bersih)')
-                            ->required()
-                            ->columnSpan(2)
+                            // ->required()
                             ->readOnly()
                             ->reactive()
                             ->numeric(),
@@ -138,7 +136,7 @@ class ProductResource extends Resource
                             ->numeric()
                             // ->live(onBlur: true)
                             ->default(0)
-                            ->debounce(600)
+                            ->debounce(1500)
                             ->afterStateUpdated(
                                 function (callable $set, $state, $get) {
                                     $set('total_kuota', ($get('kuota_nasional') != null) ? $get('kuota_nasional') + $get('kuota_lokal') : $get('kuota_lokal'));
@@ -150,7 +148,7 @@ class ProductResource extends Resource
                             ->numeric()
                             // ->live(onBlur: true)
                             ->default(0)
-                            ->debounce(600)
+                            ->debounce(1500)
                             ->extraAttributes([
                                 'x-data' => '{}',
                                 'x-init' => 'this.addEventListener("focus", () => { $el.select() })',
@@ -168,7 +166,7 @@ class ProductResource extends Resource
                             ->numeric()
                             ->readOnly()
                             ->live(onBlur: true)
-                            ->debounce(600)
+                            ->debounce(1500)
                             ->afterStateUpdated(
                                 fn(callable $set, $state, $get) =>
                                 $set('yield', ($get('total_kuota') != null) ? $get('eup') / $get('total_kuota') : 0)

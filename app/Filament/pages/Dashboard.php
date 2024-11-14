@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\pages;
+namespace App\Filament\Pages;
 
-class Dashboard extends \Filament\pages\Dashboard
+class Dashboard extends \Filament\Pages\Dashboard
 {
     public function getColumns(): int | string | array
     {

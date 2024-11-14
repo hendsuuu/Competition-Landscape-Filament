@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Auth\Register;
+use App\Filament\pages\Auth\Register;
 use App\Filament\Resources\LineChartResource\Widgets\BlogPostsChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Pages\Auth;
+namespace App\Filament\pages\Auth;
 
 use App\Models\Location;
 use App\Models\User;
@@ -8,7 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Pages\Auth\Register as BaseRegister;
+use Filament\pages\Auth\Register as BaseRegister;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;

@@ -30,6 +30,11 @@ class Register extends BaseRegister
                     ->email()
                     ->unique()
                     ->required(),
+                TextInput::make('no_hp')
+                    ->label('Nomor Telepon (contoh : 0855545130303)')
+                    ->numeric()
+                    ->unique()
+                    ->required(),
                 TextInput::make('password')
                     ->password()
                     ->required()

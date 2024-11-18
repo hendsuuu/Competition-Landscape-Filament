@@ -33,6 +33,10 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('no_hp')
+                    ->numeric()
+                    ->required()
+                    ->maxLength(15),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -41,7 +45,7 @@ class UserResource extends Resource
                     ->required(),
             ]);
     }
-    
+
 
     public static function table(Table $table): Table
     {
@@ -50,6 +54,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('no_hp')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -91,19 +97,21 @@ class UserResource extends Resource
         return $infolist
             ->schema([
                 Section::make('User Information')
-                ->columns(2)
+                    ->columns(2)
                     ->schema([
                         TextEntry::make('name')
-                        ->label('Name'),
+                            ->label('Name'),
                         TextEntry::make('email')
-                        ->label('Email'),
+                            ->label('Email'),
+                        TextEntry::make('no_hp')
+                            ->label('Nomor Telepon'),
                     ]),
                 Section::make('Roles')
-                ->columns(1)
+                    ->columns(1)
                     ->schema([
                         TextEntry::make('roles.name')
-                        ->label('Roles')
-                        ->listWithLineBreaks(),
+                            ->label('Roles')
+                            ->listWithLineBreaks(),
                     ]),
             ]);
     }

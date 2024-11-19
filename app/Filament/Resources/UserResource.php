@@ -42,6 +42,16 @@ class UserResource extends Resource
                     ->preload()
                     ->searchable()
                     ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->minLength(8)
+                    ->same('passwordConfirmation'),
+                Forms\Components\TextInput::make('passwordConfirmation')
+                    ->label('Confirm Password')
+                    ->password()
+                    ->required()
+                    ->minLength(8),
             ]);
     }
 

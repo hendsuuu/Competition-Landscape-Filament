@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\InteractsWithMedia;
+// use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 
-class Product extends Model implements HasMedia
+class Product extends Model
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
     protected $fillable = [
         'user_id',
         // 'location_id',
@@ -25,10 +25,10 @@ class Product extends Model implements HasMedia
         'validity',
         'product_type',
         'flag_type',
-        'denom', 
-        'image', 
+        'denom',
+        'image',
     ];
-    
+
     public function Location(): BelongsTo
     {
         return $this->belongsTo(Location::class);

@@ -392,11 +392,12 @@ class ProductResource extends Resource
                 //     ExcelExport::make()->withFilename(fn($resource) => $resource::getLabel())
                 // ]),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
                 ExportBulkAction::make(),
             ]);
@@ -504,9 +505,9 @@ class ProductResource extends Resource
     {
         return [
             'index' => Pages\ListProducts::route('/'),
-            // 'create' => Pages\CreateProduct::route('/create'),
-            // 'view' => Pages\ViewProduct::route('/{record}'),
-            // 'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'create' => Pages\CreateProduct::route('/create'),
+            'view' => Pages\ViewProduct::route('/{record}'),
+            'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }

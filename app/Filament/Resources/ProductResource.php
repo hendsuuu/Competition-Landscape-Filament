@@ -397,7 +397,7 @@ class ProductResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
                 ExportBulkAction::make(),
             ]);
@@ -505,9 +505,9 @@ class ProductResource extends Resource
     {
         return [
             'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'view' => Pages\ViewProduct::route('/{record}'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            // 'create' => Pages\CreateProduct::route('/create'),
+            // 'view' => Pages\ViewProduct::route('/{record}'),
+            // 'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }

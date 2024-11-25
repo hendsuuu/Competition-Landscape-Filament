@@ -26,6 +26,8 @@ class Product extends Model
         'product_type',
         'flag_type',
         'denom',
+        'top_product',
+        'product_rank',
         'image',
     ];
 

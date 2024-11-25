@@ -83,6 +83,17 @@ class ProductResource extends Resource
                             ])
                             ->native(false)
                             ->required(),
+                        Forms\Components\Select::make('top_product')
+                            ->label('ٌTop Product')
+                            ->required()
+                            ->options([
+                                'Ya' => 'Ya',
+                                'Tidak' => 'Tidak',
+                            ]),
+                        Forms\Components\TextInput::make('product_rank')
+                            ->label('ٌRanking *jika top product')
+                            ->maxLength(255)
+                            ->numeric(),
                         Forms\Components\Select::make('provinsi')
                             ->label('Provinsi')
                             ->native(false)
@@ -360,6 +371,9 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('product_type'),
                 Tables\Columns\TextColumn::make('denom'),
+                Tables\Columns\TextColumn::make('top_product')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('product_rank'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Author')
                     ->numeric()

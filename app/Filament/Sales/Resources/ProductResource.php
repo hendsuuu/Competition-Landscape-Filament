@@ -171,6 +171,30 @@ class ProductResource extends Resource
                             )
 
                             ->reactive(),
+                        Forms\Components\Select::make('kuota_tambahan')
+                            ->label('Kuota Lain')
+                            ->options([
+                                'Unlimited' => 'Unlimited',
+                                'Aplikasi' => 'Aplikasi',
+                                'Tidak ada' => 'Tidak ada',
+                            ])
+                            ->reactive()  // Reactif, akan memicu perubahan di form setelah pilihan dipilih
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                // Menambahkan logika jika dibutuhkan (misalnya menyimpan nilai lain)
+                                if ($state === 'Aplikasi') {
+                                    // Mengatur nilai input teks yang muncul jika opsi 'Lainnya' dipilih
+                                    $set('kuota_tambahan_text', '');  // Jika ingin mereset field teks
+                                }
+                            }),
+
+                        Forms\Components\TextInput::make('kuota_tambahan_text')
+                            ->label('Nama Aplikasi')  // Label input teks
+                            ->visible(fn($get) => $get('kuota_tambahan') === 'Aplikasi')  // Hanya terlihat jika 'Lainnya' dipilih
+                            ->required(fn($get) => $get('kuota_tambahan') === 'Aplikasi')  // Validasi jika 'Lainnya' dipilih
+                            ->afterStateUpdated(
+                                fn(callable $set, $state, $get) =>
+                                $set('kuota_tambahan', ($get('kuota_tambahan_text') != null) ? $get('kuota_tambahan') . ': ' . $get('kuota_tambahan_text') : 0)
+                            ),
                         Forms\Components\TextInput::make('validity')
                             ->label('validity (Jumlah Hari Paket Aktif)')
                             ->required()
@@ -357,6 +381,9 @@ class ProductResource extends Resource
                     ->suffix(' GB')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('kuota_tambahan')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('validity')
                     ->numeric()
                     ->suffix(' Hari')
@@ -463,6 +490,10 @@ class ProductResource extends Resource
                             ->label('Total Kuota')
                             ->suffix(' GB')
                             ->columnSpan(2),
+                        TextEntry::make('kuota_tambahan')
+                            ->label('Kuota tambahan')
+                            // ->suffix(' GB')
+                            ->columnSpan(1),
                         TextEntry::make('validity')
                             ->label('Validity (Days)')
                             ->suffix(' Days')

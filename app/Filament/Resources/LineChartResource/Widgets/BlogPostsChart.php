@@ -76,37 +76,37 @@ class BlogPostsChart extends ChartWidget
         return 'scatter';
     }
 
-    protected function getOptions(): array
-    {
-        return [
-            'scales' => [
-                'x' => [
-                    'title' => [
-                        'display' => true,
-                        'text' => 'EUP',
-                    ],
-                ],
-                'y' => [
-                    'title' => [
-                        'display' => true,
-                        'text' => 'Total Kuota',
-                    ],
-                ],
-            ],
-            'plugins' => [
-                'tooltip' => [
-                    'callbacks' => [
-                        'label' => function ($tooltipItem) {
-                            // Menampilkan informasi default ditambah dengan 'name' dari data
-                            $name = $tooltipItem->raw['name'];
-                            $x = $tooltipItem->raw['x'];
-                            $y = $tooltipItem->raw['y'];
+    // protected function getOptions(): array
+    // {
+    //     return [
+    //         'scales' => [
+    //             'x' => [
+    //                 'title' => [
+    //                     'display' => true,
+    //                     'text' => 'EUP',
+    //                 ],
+    //             ],
+    //             'y' => [
+    //                 'title' => [
+    //                     'display' => true,
+    //                     'text' => 'Total Kuota',
+    //                 ],
+    //             ],
+    //         ],
+    //         'plugins' => [
+    //             'tooltip' => [
+    //                 'callbacks' => [
+    //                     'label' => function ($tooltipItem) {
+    //                         // Menampilkan informasi default ditambah dengan 'name' dari data
+    //                         $name = $tooltipItem->raw['name'];
+    //                         $x = $tooltipItem->raw['x'];
+    //                         $y = $tooltipItem->raw['y'];
 
-                            return "$name: ($x, $y)"; // Modifikasi dengan menampilkan 'name' bersama koordinat
-                        },
-                    ],
-                ],
-            ],
-        ];
-    }
+    //                         return "$name: ($x, $y)"; // Modifikasi dengan menampilkan 'name' bersama koordinat
+    //                     },
+    //                 ],
+    //             ],
+    //         ],
+    //     ];
+    // }
 }

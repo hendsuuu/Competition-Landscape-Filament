@@ -22,6 +22,7 @@ class Product extends Model
         'kuota_nasional',
         'kuota_lokal',
         'total_kuota',
+        'kuota_tambahan',
         'validity',
         'product_type',
         'flag_type',

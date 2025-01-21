@@ -19,6 +19,21 @@ class ProductTableWidget extends Widget
     {
         $products = Product::all();
 
+        function convertDenomToNumber($denom)
+        {
+            // Jika ada simbol '~' atau '<', kita perlu mengekstrak angka atau memberi angka default
+            if (strpos($denom, '<') === 0) {
+                return (int)filter_var($denom, FILTER_SANITIZE_NUMBER_INT) - 1; // Anggap angka yang lebih kecil dari yang tertera
+            }
+
+            if (strpos($denom, '~') === 0) {
+                return (int)filter_var($denom, FILTER_SANITIZE_NUMBER_INT);
+            }
+
+            // Mengambil angka pertama sebelum 'K'
+            return (int)filter_var($denom, FILTER_SANITIZE_NUMBER_INT);
+        }
+
         // Ambil daftar brand yang unik
         $this->brands = $products->unique('brand_id')->map(function ($product) {
             return [
@@ -28,7 +43,9 @@ class ProductTableWidget extends Widget
         });
 
         // Ambil denoms yang unik
-        $this->denoms = $products->unique('denom');
+        $this->denoms = $products->unique('denom')->sortBy(function ($denom) {
+            return convertDenomToNumber($denom->denom);
+        });
 
         foreach ($this->denoms as $denom) {
             foreach ($this->brands as $brand) {
